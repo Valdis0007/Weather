@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
 
             // Выполняем запрос погоды
             val apiService = RetrofitClient.create()
-            val call = apiService.getWeatherData(latitude, longitude)
+            val call = apiService.getWeatherData(latitude=latitude, longitude=longitude, currentWeather = true)
             Log.d("dotes", latitude.toString())
             Log.d("dotes", longitude.toString())
 

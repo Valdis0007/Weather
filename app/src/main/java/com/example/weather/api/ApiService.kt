@@ -11,5 +11,6 @@ interface ApiService {
     fun getWeatherData(
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double,
+        @Query("current_weather") currentWeather: Boolean
         ): Call<ForecastResponse>
 }
