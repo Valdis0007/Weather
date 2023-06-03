@@ -1,5 +1,6 @@
 package com.example.weather.api
 
+import com.example.weather.model.ForecastResponse
 import com.example.weather.model.WeatherData
 import retrofit2.Call
 import retrofit2.http.GET
@@ -10,6 +11,5 @@ interface ApiService {
     fun getWeatherData(
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double,
-
-    ): Call<WeatherData>
+        ): Call<ForecastResponse>
 }

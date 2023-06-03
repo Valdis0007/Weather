@@ -8,11 +8,13 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.weather.R
 import com.example.weather.databinding.ActivityMainBinding
+import com.example.weather.model.ForecastResponse
 import com.example.weather.model.WeatherData
 import retrofit2.Call
 import retrofit2.Callback
@@ -65,13 +67,16 @@ class MainActivity : AppCompatActivity() {
             // Выполняем запрос погоды
             val apiService = RetrofitClient.create()
             val call = apiService.getWeatherData(latitude, longitude)
+            Log.d("dotes", latitude.toString())
+            Log.d("dotes", longitude.toString())
 
-            call.enqueue(object : Callback<WeatherData> {
-                override fun onResponse(call: Call<WeatherData>, response: Response<WeatherData>) {
+            call.enqueue(object : Callback<ForecastResponse> {
+                override fun onResponse(call: Call<ForecastResponse>, response: Response<ForecastResponse>) {
                     if (response.isSuccessful) {
                         val weatherData = response.body()
                         if (weatherData != null) {
                             // Обработка полученных данных о погоде
+
                             displayWeatherData(weatherData)
                         }
                     } else {
@@ -84,7 +89,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call: Call<WeatherData>, t: Throwable) {
+                override fun onFailure(call: Call<ForecastResponse>, t: Throwable) {
                     // Ошибка при выполнении запроса
                     Toast.makeText(
                         this@MainActivity,
@@ -108,15 +113,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun displayWeatherData(weatherData: WeatherData) {
+    private fun displayWeatherData(weatherData: ForecastResponse) {
         // Отображение данных о погоде в пользовательском интерфейсе
-        val temperature = weatherData.temperature // Получение температуры
-        val humidity = weatherData.humidity // Получение влажности
-        val windSpeed = weatherData.windSpeed // Получение скорости ветра
+        val temperature = weatherData.currentWeather.temperature // Получение температуры
+        // Получение влажности
+        val windSpeed = weatherData.currentWeather.windSpeed // Получение скорости ветра
 
-        binding.textViewTemperature.text = "Temperature: $temperature" // Отображение температуры
-        binding.textViewHumidity.text = "Humidity: $humidity" // Отображение влажности
-        binding.textViewWindSpeed.text = "Wind Speed: $windSpeed" // Отображение скорости ветра
+        binding.textViewTemperature.text = "Temperature: $temperature °C" // Отображение температуры
+         Log.d("wthr", temperature.toString())
+        // Отображение влажности
+        binding.textViewWindSpeed.text = "Wind Speed: $windSpeed km/h" // Отображение скорости ветра
     }
 
     companion object {
