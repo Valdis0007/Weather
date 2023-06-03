@@ -1,3 +1,5 @@
+package com.example.weather.api
+
 import com.example.weather.model.WeatherData
 import retrofit2.Call
 import retrofit2.http.GET
